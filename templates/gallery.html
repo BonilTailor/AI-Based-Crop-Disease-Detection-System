@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Prediction Gallery</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+  <style>
+    body { margin: 30px; }
+    .container { max-width:1000px; margin:auto; }
+    .entry { display:flex; gap:20px; align-items:center; border-bottom:1px solid #eee; padding:12px 0; }
+    .thumb { width:160px; }
+    .thumb img { max-width:160px; border:1px solid #ccc; }
+    .meta { flex:1; }
+    .meta h5 { margin:0 0 6px 0; }
+    .actions a { margin-right:8px; }
+    .pagination { margin-top:20px; text-align:center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Prediction Gallery</h2>
+    <p><a href="/" class="button">Upload New</a></p>
+    {% if entries %}
+      {% for e in entries %}
+        <div class="entry">
+          <div class="thumb">
+            <img src="{{ url_for('results_file', filename=e['Original_Image']) }}" alt="orig">
+          </div>
+          <div class="thumb">
+            <img src="{{ url_for('results_file', filename=e['Heatmap_Image']) }}" alt="heat">
+          </div>
+          <div class="meta">
+            <h5>{{ e['Timestamp'] }} — {{ e['Prediction'] }} ({{ e['Confidence'] }}%)</h5>
+            <div class="actions">
+              <a href="{{ url_for('results_file', filename=e['Original_Image']) }}" download class="button">Download Original</a>
+              <a href="{{ url_for('results_file', filename=e['Heatmap_Image']) }}" download class="button">Download Heatmap</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+      <div class="pagination">
+        {% if page > 1 %}
+          <a href="{{ url_for('gallery', page=page-1) }}" class="button">⬅ Prev</a>
+        {% endif %}
+        <span>Page {{ page }} of {{ total_pages }}</span>
+        {% if page < total_pages %}
+          <a href="{{ url_for('gallery', page=page+1) }}" class="button">Next ➡</a>
+        {% endif %}
+      </div>
+    {% else %}
+      <p>No predictions in the log yet.</p>
+    {% endif %}
+  </div>
+</body>
+</html>
