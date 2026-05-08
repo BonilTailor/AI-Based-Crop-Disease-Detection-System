@@ -1,6 +1,6 @@
 # AI-Based-Crop-Disease-Detection-System-
 
-Overview
+## Overview
 
 This project is a deep learning-based web application for automated crop disease classification using plant leaf images. The system uses a fine-tuned ResNet50 CNN model trained on the PlantVillage dataset containing over 54,000 labeled images across 15 classes.
 
